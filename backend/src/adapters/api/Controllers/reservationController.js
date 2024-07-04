@@ -7,6 +7,8 @@ const UserRepository = require("../../infrastructure/userRepository")
 async function checkIfBookIsAvailable(req, res) {
     try {
         jwt.verify(req.headers.authorization, process.env.SECRET, async (err, result) => {
+            if (err) return res.status(401).send('Token invalid')
+
             const bookToBorrow = await BookRepository.findByPk(req.params.bookId);
 
             if (bookToBorrow) {
@@ -38,6 +40,7 @@ async function checkIfBookIsAvailable(req, res) {
 async function borrowBook(req, res) {
     try {
         jwt.verify(req.headers.authorization, process.env.SECRET, async (err, result) => {
+            if (err) return res.status(401).send('Token invalid')
 
             const user = await UserRepository.findOne(req.body, {
                 where: {
@@ -85,7 +88,36 @@ async function borrowBook(req, res) {
 async function returnBook(req, res) {
     try {
         jwt.verify(req.headers.authorization, process.env.SECRET, async (err, result) => {
+            if (err) return res.status(401).send('Token invalid')
 
+            const [reservation_exists, reservation] = await ReservationRepository.update({
+                realEndDate: Date.now()
+            }, {
+                returning: true,
+                where: {
+                    id: req.params.reservationId
+                }
+            })
+
+            if (reservation_exists !== 0) {
+                const [book_exists, book] = await BookRepository.update({
+                    available: true
+                }, {
+                    returning: true,
+                    where: {
+                        id: reservation.bookId
+                    }
+                })
+                if (book_exists !== 0) {
+                    res.status(500).send('Error book asocioated to reservation doesnt exists')
+                }
+                else {
+                    res.status(200).send('Book returned successfully')
+                }
+            }
+            else {
+                return res.status(404).send('No reservation found for that id')
+            }
         })
     }
     catch (error) {
@@ -97,7 +129,7 @@ async function returnBook(req, res) {
 async function checkUserBookings(req, res) {
     try {
         jwt.verify(req.headers.authorization, process.env.SECRET, async (err, result) => {
-
+            if (err) return res.status(401).send('Token invalid')
         })
     }
     catch (error) {
