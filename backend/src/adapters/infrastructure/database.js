@@ -40,13 +40,6 @@ function addRelationsToModels() {
 
     BookRepository.hasMany(ReservationRepository)
     ReservationRepository.hasOne(BookRepository)
-
-    BookRepository.create({
-        name: 'Lord of the Rings',
-        author: 'JRR Tolkien',
-        dateOfPublication: '1970-01-01',
-        genre: 'Fantasy'
-    })
 }
 
 module.exports = { sequelize, checkConnection, syncModels, addRelationsToModels }

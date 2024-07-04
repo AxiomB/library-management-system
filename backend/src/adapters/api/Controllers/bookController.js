@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken")
 const bookRepository = require('../../../adapters/infrastructure/bookRepository')
 
+/*Punto 6 de la prueba */
 async function getBookInfo(req, res) {
-
     try {
         jwt.verify(req.headers.authorization, process.env.SECRET, async (err, result) => {
             if (err) return res.status(401).send('Token invalid')

@@ -2,6 +2,7 @@ const UserRepository = require('../../infrastructure/userRepository')
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt');
 
+/*Punto 1 de la prueba */
 const signup = async (req, res) => {
     try {
         const saltRounds = bcrypt.genSaltSync(10);

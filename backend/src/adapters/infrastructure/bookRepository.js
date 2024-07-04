@@ -20,6 +20,10 @@ const BookRepository = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false
         },
+        currentlyAvailable: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
+        },
         createdAt: {
             type: DataTypes.DATE,
             defaultValue: new Date

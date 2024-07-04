@@ -12,6 +12,10 @@ const ReservationRepository = sequelize.define(
             type: DataTypes.DATE,
             allowNull: false
         },
+        realEndDate: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
         createdAt: {
             type: DataTypes.DATE,
             defaultValue: new Date
