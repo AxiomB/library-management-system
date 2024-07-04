@@ -16,6 +16,10 @@ const BookRepository = sequelize.define(
             type: DataTypes.DATE,
             allowNull: false
         },
+        genre: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         createdAt: {
             type: DataTypes.DATE,
             defaultValue: new Date
