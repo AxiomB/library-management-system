@@ -32,7 +32,7 @@ async function checkIfBookIsAvailable(req, res) {
         })
     }
     catch (error) {
-        res.status(500).send(error.message)
+        return res.status(500).send(error.message)
     }
 }
 
@@ -80,7 +80,7 @@ async function borrowBook(req, res) {
         })
     }
     catch (error) {
-        res.status(500).send(error.message)
+        return res.status(500).send(error.message)
     }
 }
 
@@ -121,7 +121,7 @@ async function returnBook(req, res) {
         })
     }
     catch (error) {
-        res.status(500).send(error.message)
+        return res.status(500).send(error.message)
     }
 }
 
@@ -130,10 +130,29 @@ async function checkUserBookings(req, res) {
     try {
         jwt.verify(req.headers.authorization, process.env.SECRET, async (err, result) => {
             if (err) return res.status(401).send('Token invalid')
+
+            const user = await UserRepository.findOne(req.body, {
+                where: {
+                    email: result.email
+                }
+            })
+
+            const reservations = await ReservationRepository.findAll({
+                where: {
+                    userId: user.id
+                }
+            })
+
+            if (reservations) {
+                return res.status(200).send(reservations)
+            }
+            else {
+                return res.status(404).send('No reservations found for this user')
+            }
         })
     }
     catch (error) {
-        res.status(500).send(error.message)
+        return res.status(500).send(error.message)
     }
 }
 
