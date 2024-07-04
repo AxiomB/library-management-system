@@ -14,6 +14,7 @@ services:
       - DATABASE_PASSWORD=/run/secrets/db-password
       - DATABASE_HOST=maria-db
       - NODE_ENV=development
+      - SECRET=quitealongsecret
     ports:
       - 80:80
       - 9229:9229

@@ -1,5 +1,6 @@
 const UserRepository = require('../../infrastructure/userRepository')
 const jwt = require("jsonwebtoken")
+const bcrypt = require('bcrypt');
 
 const signup = async (req, res) => {
     try {
