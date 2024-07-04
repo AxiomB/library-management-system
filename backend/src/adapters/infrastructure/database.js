@@ -32,6 +32,14 @@ async function syncModels(value) {
 
 function addRelationsToModels() {
     const UserRepository = require('./userRepository')
+    const BookRepository = require('./bookRepository')
+    const ReservationRepository = require('./reservationRepository')
+
+    UserRepository.hasMany(ReservationRepository)
+    ReservationRepository.hasOne(UserRepository)
+
+    BookRepository.hasMany(ReservationRepository)
+    ReservationRepository.hasOne(BookRepository)
 }
 
 module.exports = { sequelize, checkConnection, syncModels, addRelationsToModels }
